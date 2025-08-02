@@ -18,8 +18,8 @@ const ChilizLogo: React.FC<ChilizLogoProps> = ({ size = 'md', className = '' }) 
   return (
     <div className={`flex items-center ${className}`}>
       <Image
-        src="/full-chiliz-logo.png"
-        alt="Chiliz"
+        src="/stellar-logo.png"
+        alt="Stellar"
         width={120}
         height={30}
         className={`${sizeClasses[size]} w-auto object-contain`}
