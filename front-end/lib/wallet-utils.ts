@@ -104,6 +104,90 @@ export const getWalletDisplayName = (walletId: string): string => {
 };
 
 /**
+ * Get XLM balance for a Stellar account
+ */
+export const getXlmBalance = async (
+  address: string,
+  network: WalletNetwork = WalletNetwork.TESTNET
+): Promise<string> => {
+  try {
+    const accountInfo = await getAccountInfo(address, network);
+    
+    // Find XLM balance (native asset)
+    const xlmBalance = accountInfo.balances.find((balance: any) => 
+      balance.asset_type === 'native'
+    );
+    
+    if (!xlmBalance) {
+      return '0';
+    }
+    
+    // Convert from stroops to XLM (1 XLM = 10,000,000 stroops)
+    const balanceInXlm = parseFloat(xlmBalance.balance) / 10000000;
+    return balanceInXlm.toFixed(7); // 7 decimal places for XLM
+  } catch (error) {
+    console.error('Error getting XLM balance:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get all balances for a Stellar account
+ */
+export const getAllBalances = async (
+  address: string,
+  network: WalletNetwork = WalletNetwork.TESTNET
+): Promise<Array<{asset: string, balance: string, assetType: string}>> => {
+  try {
+    const accountInfo = await getAccountInfo(address, network);
+    
+    return accountInfo.balances.map((balance: any) => {
+      let asset = 'XLM';
+      let assetType = 'native';
+      
+      if (balance.asset_type !== 'native') {
+        asset = `${balance.asset_code}:${balance.asset_issuer}`;
+        assetType = 'token';
+      }
+      
+      // Convert from stroops to XLM for native asset
+      let balanceValue = balance.balance;
+      if (balance.asset_type === 'native') {
+        balanceValue = (parseFloat(balance.balance) / 10000000).toFixed(7);
+      }
+      
+      return {
+        asset,
+        balance: balanceValue,
+        assetType
+      };
+    });
+  } catch (error) {
+    console.error('Error getting all balances:', error);
+    throw error;
+  }
+};
+
+/**
+ * Format balance for display
+ */
+export const formatBalance = (balance: string, asset: string = 'XLM'): string => {
+  const numBalance = parseFloat(balance);
+  
+  if (asset === 'XLM') {
+    if (numBalance >= 1000) {
+      return `${(numBalance / 1000).toFixed(2)}k XLM`;
+    } else if (numBalance >= 1) {
+      return `${numBalance.toFixed(2)} XLM`;
+    } else {
+      return `${numBalance.toFixed(4)} XLM`;
+    }
+  }
+  
+  return `${balance} ${asset}`;
+};
+
+/**
  * Create a simple transaction XDR for testing
  * This is just an example - in real usage you'd create proper Stellar transactions
  */

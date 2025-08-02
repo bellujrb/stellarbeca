@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useWallet } from '@/contexts/wallet-context';
 import { WalletNetwork } from '@creit.tech/stellar-wallets-kit';
+import { getXlmBalance, getAllBalances, formatBalance } from '@/lib/wallet-utils';
 
 export const useWalletActions = () => {
   const { 
@@ -57,6 +58,54 @@ export const useWalletActions = () => {
     }
   }, [isConnected, kit, signTransaction]);
 
+  const getBalance = useCallback(async (
+    network: WalletNetwork = WalletNetwork.TESTNET
+  ) => {
+    if (!isConnected || !publicKey) {
+      throw new Error('Wallet not connected. Please connect your wallet first.');
+    }
+
+    try {
+      const balance = await getXlmBalance(publicKey, network);
+      return balance;
+    } catch (err) {
+      console.error('Error getting balance:', err);
+      throw new Error('Failed to get wallet balance. Please try again.');
+    }
+  }, [isConnected, publicKey]);
+
+  const getAllAccountBalances = useCallback(async (
+    network: WalletNetwork = WalletNetwork.TESTNET
+  ) => {
+    if (!isConnected || !publicKey) {
+      throw new Error('Wallet not connected. Please connect your wallet first.');
+    }
+
+    try {
+      const balances = await getAllBalances(publicKey, network);
+      return balances;
+    } catch (err) {
+      console.error('Error getting all balances:', err);
+      throw new Error('Failed to get wallet balances. Please try again.');
+    }
+  }, [isConnected, publicKey]);
+
+  const getFormattedBalance = useCallback(async (
+    network: WalletNetwork = WalletNetwork.TESTNET
+  ) => {
+    if (!isConnected || !publicKey) {
+      return '0 XLM';
+    }
+
+    try {
+      const balance = await getXlmBalance(publicKey, network);
+      return formatBalance(balance, 'XLM');
+    } catch (err) {
+      console.error('Error getting formatted balance:', err);
+      return '0 XLM';
+    }
+  }, [isConnected, publicKey]);
+
   const getWalletInfo = useCallback(() => {
     return {
       isConnected,
@@ -72,6 +121,11 @@ export const useWalletActions = () => {
     connect: safeConnect,
     disconnect: safeDisconnect,
     signTransaction: safeSignTransaction,
+    
+    // Balance functions
+    getBalance,
+    getAllAccountBalances,
+    getFormattedBalance,
     
     // State
     getWalletInfo,
