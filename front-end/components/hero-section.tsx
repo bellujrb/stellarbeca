@@ -33,7 +33,7 @@ export default function HeroSection() {
               <h1 className="text-5xl lg:text-6xl font-black leading-tight text-stellar-black-900">
                 <div className="mb-2">El futuro de los fondos científicos</div>
                 <div className="relative mb-2">
-                  <span className="relative z-10">impulsado por Stellar y Soroswap</span>
+                  <span className="relative z-10">impulsado por Stellar y Hoops</span>
                   {/* Stellar Brushstroke Highlight Effect */}
                   <div className="absolute inset-0 transform -rotate-1 scale-105">
                     {/* Base brushstroke with irregular shape */}
@@ -58,14 +58,14 @@ export default function HeroSection() {
 
             {/* Description */}
             <p className="text-xl text-stellar-black-600 leading-relaxed max-w-xl">
-            Stellabeca brings transparency to research funding with Stellar and Soroswap 
+            Stellabeca brings transparency to research funding with Stellar and Hoops Finance
             — powering on-chain scientific grants based on milestones and trustless governance.
 
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/trading">
+              <Link href="/admin">
                 <Button
                   size="lg"
                   className="group bg-stellar-gold-500 hover:bg-stellar-gold-600 text-stellar-black-900 px-8 py-4 text-lg font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0"

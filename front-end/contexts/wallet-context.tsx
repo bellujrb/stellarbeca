@@ -158,8 +158,8 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
             setError('Wallet connection was cancelled');
           }
         },
-        modalTitle: 'Conectar Wallet Stellar',
-        notAvailableText: 'Nenhuma wallet disponível'
+        modalTitle: 'Conectar billetera Stellar',
+        notAvailableText: 'Nenhuma billetera disponível'
       });
     } catch (error) {
       console.error('Error opening wallet modal:', error);

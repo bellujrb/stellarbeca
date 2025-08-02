@@ -11,7 +11,7 @@ const FAQ = () => {
       id: 1,
       question: "¿Qué es Stellabeca?",
       answer:
-        "Stellabeca es una plataforma descentralizada para crear y gestionar becas científicas on-chain. Permite liberar fondos por hitos validados entre el estudiante, tutor y coordinador, usando el poder de la blockchain de Stellar y el rendimiento de Soroswap.",
+        "Stellabeca es una plataforma descentralizada para crear y gestionar becas científicas on-chain. Permite liberar fondos por hitos validados entre el estudiante, tutor y coordinador, usando el poder de la blockchain de Stellar y el rendimiento de Hoops Finance.",
     },
     {
       id: 2,
@@ -33,9 +33,9 @@ const FAQ = () => {
     },
     {
       id: 5,
-      question: "¿Cómo se relaciona Stellabeca con Stellar y Soroswap?",
+      question: "¿Cómo se relaciona Stellabeca con Stellar y Hoops Finance?",
       answer:
-        "Stellabeca está construida sobre Stellar, una blockchain rápida y eficiente para transferencias financieras. Además, integra Soroswap para que los fondos bloqueados puedan generar rendimiento mientras esperan ser liberados.",
+        "Stellabeca está construida sobre Stellar, una blockchain rápida y eficiente para transferencias financieras. Además, integra Hoops Finance para que los fondos bloqueados puedan generar rendimiento mientras esperan ser liberados.",
     },
     {
       id: 6,
@@ -83,8 +83,8 @@ const FAQ = () => {
             <span className="text-stellar-gold-600 text-sm font-semibold">AYUDA</span>
           </div>
           <h2 className="text-4xl lg:text-5xl font-black text-stellar-black-900 leading-tight mb-6">
-            Preguntas frecuentes <span className="relative">
-              <span className="relative z-10">Preguntas</span>
+            Preguntas <span className="relative">
+              <span className="relative z-10">Frecuentes</span>
               {/* Stellar Brushstroke Highlight Effect */}
               <div className="absolute inset-0 transform -rotate-1 scale-105">
                 {/* Base brushstroke with irregular shape */}
