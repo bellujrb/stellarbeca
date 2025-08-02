@@ -118,7 +118,7 @@ export default function Header() {
             </NavigationMenu>
           </nav>
 
-          {/* Launch App Button */}
+          {/* Lanzar App Button */}
           <div className="flex items-center space-x-4">
             <Link href="/admin">
               <Button className="bg-stellar-gold-500 hover:bg-stellar-gold-600 text-stellar-black-900 border-0 font-semibold px-6 py-2 rounded-xl transition-all duration-300">

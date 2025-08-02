@@ -71,7 +71,7 @@ export default function HeroSection() {
                   className="group bg-stellar-gold-500 hover:bg-stellar-gold-600 text-stellar-black-900 px-8 py-4 text-lg font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0"
                 >
                   <Zap className="w-5 h-5 mr-2" />
-                  Launch App
+                  Lanzar App
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
@@ -80,7 +80,7 @@ export default function HeroSection() {
                 size="lg"
                 className="group border-2 border-stellar-black-300 text-stellar-black-700 hover:bg-stellar-white-50 px-8 py-4 text-lg font-bold rounded-2xl transition-all duration-300"
               >
-                Documentation
+                Documentación
               </Button>
             </div>
 
