@@ -19,7 +19,9 @@ const Footer = () => {
           {/* Social Links */}
           <div className="flex space-x-4">
             <a 
-              href="#" 
+              href="https://x.com/stellarbeca" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 bg-stellar-black-800 rounded-lg flex items-center justify-center text-stellar-black-400 hover:bg-stellar-gold-500 hover:text-stellar-black-900 transition-all duration-300"
             >
               <Twitter className="w-5 h-5" />
