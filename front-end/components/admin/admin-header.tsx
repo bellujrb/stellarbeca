@@ -22,15 +22,16 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left Side */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
             <Link href="/">
               <Button variant="ghost" size="sm" className="text-stellar-black-600 hover:text-stellar-black-900">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Volver
               </Button>
             </Link>
-            <div className="h-6 w-px bg-stellar-black-200"></div>
-            <div className="flex items-center space-x-3">
+            {/* Separator and Title - Hidden on mobile */}
+            <div className="hidden md:block h-6 w-px bg-stellar-black-200"></div>
+            <div className="hidden md:flex items-center space-x-3">
               <span className="text-2xl font-black text-stellar-black-900">Stellarbeca</span>
               <div className="text-xs text-stellar-black-500 font-medium bg-stellar-gold-50 px-2 py-1 rounded-lg border border-stellar-gold-200">App</div>
             </div>
