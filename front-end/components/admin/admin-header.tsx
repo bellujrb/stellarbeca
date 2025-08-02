@@ -80,7 +80,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({
             <div className="h-6 w-px bg-stellar-black-200"></div>
             <div className="flex items-center space-x-3">
               <span className="text-2xl font-black text-stellar-black-900">Stellarbeca</span>
-              <div className="text-xs text-stellar-black-500 font-medium bg-stellar-gold-50 px-2 py-1 rounded-lg border border-stellar-gold-200">Admin</div>
+              <div className="text-xs text-stellar-black-500 font-medium bg-stellar-gold-50 px-2 py-1 rounded-lg border border-stellar-gold-200">App</div>
             </div>
           </div>
 
