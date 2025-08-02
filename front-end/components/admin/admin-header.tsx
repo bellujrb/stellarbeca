@@ -1,13 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   ArrowLeft,
   Wallet,
+  LogOut,
+  Copy,
+  Check
 } from 'lucide-react';
 import Link from 'next/link';
-import { setAllowed, isAllowed, getPublicKey } from '@stellar/freighter-api';
+import { useWalletActions } from '@/hooks/use-wallet-actions';
+import { formatAddress, getWalletDisplayName } from '@/lib/wallet-utils';
+import { useState } from 'react';
 
 interface AdminHeaderProps {
   selectedGame: string;
@@ -15,55 +20,40 @@ interface AdminHeaderProps {
 }
 
 const AdminHeader: React.FC<AdminHeaderProps> = ({
-  }) => {
-  const [isConnected, setIsConnected] = useState(false);
-  const [publicKey, setPublicKey] = useState<string | null>(null);
+  selectedGame,
+  onGameSelect
+}) => {
+  const { 
+    isConnected, 
+    publicKey, 
+    selectedWallet, 
+    connect, 
+    disconnect, 
+    isLoading, 
+    error 
+  } = useWalletActions();
+  
+  const [copied, setCopied] = useState(false);
 
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  const handleCopyAddress = async () => {
+    if (publicKey) {
+      try {
+        await navigator.clipboard.writeText(publicKey);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error('Failed to copy address:', err);
+      }
+    }
   };
 
-  const connect = () => {
-    setAllowed()
-      .then(() => isAllowed())
-      .then((allowed) => {
-        if (allowed) {
-          return getPublicKey();
-        }
-        throw new Error('Permissão negada');
-      })
-      .then((pk) => {
-        setPublicKey(pk);
-        setIsConnected(true);
-      })
-      .catch((error) => {
-        console.error('Erro ao conectar:', error);
-      });
+  const handleConnect = async () => {
+    await connect();
   };
 
-  // Check connection on mount
-  useEffect(() => {
-    const checkConnection = () => {
-      isAllowed()
-        .then((allowed) => {
-          if (allowed) {
-            return getPublicKey();
-          }
-          return null;
-        })
-        .then((pk) => {
-          if (pk) {
-            setPublicKey(pk);
-            setIsConnected(true);
-          }
-        })
-        .catch((error) => {
-          console.error('Erro ao verificar conexão:', error);
-        });
-    };
-
-    checkConnection();
-  }, []);
+  const handleDisconnect = async () => {
+    await disconnect();
+  };
 
   return (
     <div className="bg-stellar-white-600 border-b border-stellar-black-100 sticky top-0 z-50">
@@ -86,26 +76,61 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({
 
           {/* Right Side - Wallet Connection */}
           <div className="flex items-center space-x-4">
+            {error && (
+              <div className="text-red-500 text-sm bg-red-50 px-3 py-1 rounded-lg">
+                {error}
+              </div>
+            )}
+            
             {isConnected ? (
               <div className="flex items-center space-x-3">
-                {/* Wallet Address Display */}
-                <div className="flex items-center space-x-2 bg-stellar-gold-50 px-3 py-2 rounded-xl border border-stellar-gold-200">
+                {/* Wallet Info */}
+                <div className="flex items-center space-x-2 bg-stellar-gold-50 px-3 py-2 rounded-lg border border-stellar-gold-200">
                   <Wallet className="w-4 h-4 text-stellar-gold-600" />
-                  <div className="text-sm">
-                    <span className="font-semibold text-stellar-gold-600">
-                      {publicKey ? formatAddress(publicKey) : 'Conectado'}
-                    </span>
-                  </div>
+                  <span className="text-sm font-medium text-stellar-black-700">
+                    {selectedWallet ? getWalletDisplayName(selectedWallet) : 'Wallet'}
+                  </span>
                 </div>
                 
+                {/* Address Display */}
+                <div className="flex items-center space-x-2 bg-stellar-white-500 px-3 py-2 rounded-lg border border-stellar-black-200">
+                  <span className="text-sm text-stellar-black-600 font-mono">
+                    {publicKey ? formatAddress(publicKey) : 'Loading...'}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleCopyAddress}
+                    className="h-6 w-6 p-0 hover:bg-stellar-black-100"
+                  >
+                    {copied ? (
+                      <Check className="w-3 h-3 text-green-600" />
+                    ) : (
+                      <Copy className="w-3 h-3 text-stellar-black-400" />
+                    )}
+                  </Button>
+                </div>
+                
+                {/* Disconnect Button */}
+                <Button
+                  onClick={handleDisconnect}
+                  disabled={isLoading}
+                  variant="outline"
+                  size="sm"
+                  className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  {isLoading ? 'Desconectando...' : 'Desconectar'}
+                </Button>
               </div>
             ) : (
               <Button
-                onClick={connect}
+                onClick={handleConnect}
+                disabled={isLoading}
                 className="bg-stellar-gold-500 hover:bg-stellar-gold-600 text-stellar-black-900 border-0 font-semibold px-6 py-2 rounded-xl transition-all duration-300 flex items-center space-x-2"
               >
                 <Wallet className="w-4 h-4" />
-                <span>Conectar Wallet</span>
+                <span>{isLoading ? 'Conectando...' : 'Conectar Wallet'}</span>
               </Button>
             )}
           </div>
