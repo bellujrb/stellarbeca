@@ -14,6 +14,7 @@ interface WalletContextType {
   isConnected: boolean;
   publicKey: string | null;
   selectedWallet: string | null;
+  network: WalletNetwork;
   connect: () => Promise<void>;
   disconnect: () => Promise<void>;
   openWalletModal: () => Promise<void>;
@@ -42,6 +43,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
+  const [network, setNetwork] = useState<WalletNetwork>(WalletNetwork.TESTNET);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -205,6 +207,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     isConnected,
     publicKey,
     selectedWallet,
+    network,
     connect,
     disconnect,
     openWalletModal,

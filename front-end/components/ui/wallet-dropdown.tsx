@@ -7,10 +7,12 @@ import {
   Copy,
   Check,
   LogOut,
-  Coins
+  Coins,
+  Wifi
 } from 'lucide-react';
 import { useWalletActions } from '@/hooks/use-wallet-actions';
-import { formatAddress, getWalletDisplayName } from '@/lib/wallet-utils';
+import { formatAddress, getWalletDisplayName, getNetworkDisplayName } from '@/lib/wallet-utils';
+import { WalletNetwork } from '@creit.tech/stellar-wallets-kit';
 import StellarIcon from './stellar-icon';
 import StellarAvatar from './stellar-avatar';
 
@@ -19,6 +21,7 @@ const WalletDropdown: React.FC = () => {
     isConnected, 
     publicKey, 
     selectedWallet, 
+    network,
     connect, 
     disconnect, 
     getFormattedBalance,
@@ -128,12 +131,21 @@ const WalletDropdown: React.FC = () => {
                 
                 {/* Wallet Info */}
                 <div className="flex-1">
-                                   <p className="text-sm font-medium text-stellar-black-900">
-                   {publicKey ? formatAddress(publicKey) : 'Cargando...'}
-                 </p>
-                                     <p className="text-xs text-stellar-black-500">
-                     {selectedWallet ? getWalletDisplayName(selectedWallet) : 'Billetera'}
-                   </p>
+                  <p className="text-sm font-medium text-stellar-black-900">
+                    {publicKey ? formatAddress(publicKey) : 'Cargando...'}
+                  </p>
+                  <div className="flex items-center space-x-2">
+                    <p className="text-xs text-stellar-black-500">
+                      {selectedWallet ? getWalletDisplayName(selectedWallet) : 'Billetera'}
+                    </p>
+                    <span className="text-xs text-stellar-black-400">•</span>
+                    <div className="flex items-center space-x-1">
+                      <Wifi className="w-3 h-3 text-stellar-black-400" />
+                      <p className="text-xs text-stellar-black-500">
+                        {getNetworkDisplayName(network)}
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* Close Button */}
@@ -150,13 +162,13 @@ const WalletDropdown: React.FC = () => {
 
             {/* Balance Section */}
             <div className="p-4 border-b border-stellar-black-100">
-                             <div className="flex items-center space-x-2">
-                 <Coins className="w-4 h-4 text-stellar-gold-600" />
-                 <span className="text-sm text-stellar-black-600">Saldo en XLM</span>
-               </div>
-                             <p className="text-lg font-semibold text-stellar-black-900 mt-1">
-                 {loadingBalance ? 'Cargando...' : balance}
-               </p>
+              <div className="flex items-center space-x-2">
+                <Coins className="w-4 h-4 text-stellar-gold-600" />
+                <span className="text-sm text-stellar-black-600">Saldo en XLM</span>
+              </div>
+              <p className="text-lg font-semibold text-stellar-black-900 mt-1">
+                {loadingBalance ? 'Cargando...' : balance}
+              </p>
             </div>
 
             {/* Actions */}

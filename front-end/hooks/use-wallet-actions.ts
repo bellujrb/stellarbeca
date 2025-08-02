@@ -9,6 +9,7 @@ export const useWalletActions = () => {
     isConnected, 
     publicKey, 
     selectedWallet, 
+    network,
     connect, 
     disconnect, 
     signTransaction,
@@ -132,6 +133,7 @@ export const useWalletActions = () => {
     isConnected,
     publicKey,
     selectedWallet,
+    network,
     isLoading,
     error,
     
