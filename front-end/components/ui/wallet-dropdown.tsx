@@ -201,7 +201,7 @@ const WalletDropdown: React.FC = () => {
                 <div className="flex items-center space-x-3">
                   <LogOut className="w-4 h-4" />
                   <span className="text-sm">
-                    {isLoading ? 'Desconectando...' : 'Desconectar'}
+                    {isLoading ? 'Cerrando...' : 'Cerrar sesión'}
                   </span>
                 </div>
               </Button>
