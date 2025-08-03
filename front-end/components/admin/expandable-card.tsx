@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress as ProgressBar } from "@/components/ui/progress";
 import { useExpandable } from "@/hooks/use-expandable";
 
 interface BecaCardProps {
@@ -109,13 +108,14 @@ export function BecaCard({
               <span>Progreso</span>
               <span className="font-medium">{status}%</span>
             </div>
-            <ProgressBar 
-              value={status} 
-              className="h-2 bg-stellar-black-100" 
-              style={{
-                "--tw-progress-fill": status === 100 ? "rgb(34 197 94)" : "rgb(234 179 8)",
-              } as React.CSSProperties}
-            />
+            <div className="w-full bg-stellar-black-100 rounded-full h-2 overflow-hidden">
+              <div 
+                className={`h-full rounded-full transition-all duration-300 ease-out ${
+                  status === 100 ? 'bg-green-500' : 'bg-yellow-500'
+                }`}
+                style={{ width: `${status}%` }}
+              />
+            </div>
           </div>
 
           <motion.div

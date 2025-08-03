@@ -237,15 +237,18 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
 
       {/* Logout */}
       <div className="p-4 border-t border-stellar-black-100">
-        <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200 group">
+        <button 
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200 group"
+          onClick={() => {
+            window.localStorage.removeItem('walletConnected');
+            window.location.href = '/';
+          }}
+        >
           <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100 group-hover:bg-red-200 transition-all duration-200">
             <LogOut className="w-4 h-4" />
           </div>
           {!isCollapsed && (
-            <span className="font-medium text-sm" onClick={() => {
-              window.localStorage.removeItem('walletConnected');
-              window.location.href = '/';
-            }}>Cerrar sesión</span>
+            <span className="font-medium text-sm">Cerrar sesión</span>
           )}
         </button>
       </div>
