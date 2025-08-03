@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 import {
   Clock,
   Building2,
@@ -17,7 +16,6 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useExpandable } from "@/hooks/use-expandable";
 
 interface BecaCardProps {
   nombre_beca: string;
@@ -28,6 +26,7 @@ interface BecaCardProps {
   status: number;
   fecha_actualizacion?: string;
   contract_address?: string;
+  onViewDetails?: () => void;
 }
 
 export function BecaCard({
@@ -39,16 +38,8 @@ export function BecaCard({
   status,
   fecha_actualizacion = "2 horas atrás",
   contract_address,
+  onViewDetails,
 }: BecaCardProps) {
-  const { isExpanded, toggleExpand, animatedHeight } = useExpandable();
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      animatedHeight.set(isExpanded ? contentRef.current.scrollHeight : 0);
-    }
-  }, [isExpanded, animatedHeight]);
-
   const handleContractClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (contract_address) {
@@ -56,10 +47,16 @@ export function BecaCard({
     }
   };
 
+  const handleCardClick = () => {
+    if (onViewDetails) {
+      onViewDetails();
+    }
+  };
+
   return (
     <Card
       className="w-full cursor-pointer transition-all duration-300 hover:shadow-lg bg-white border border-stellar-black-100 rounded-2xl"
-      onClick={toggleExpand}
+      onClick={handleCardClick}
     >
       <CardHeader className="space-y-3 pb-4">
         <div className="flex justify-between items-start w-full">
@@ -118,53 +115,18 @@ export function BecaCard({
             </div>
           </div>
 
-          <motion.div
-            style={{ height: animatedHeight }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="overflow-hidden"
-          >
-            <div ref={contentRef}>
-              <AnimatePresence>
-                {isExpanded && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="space-y-4 pt-2"
-                  >
-                    <div className="flex items-center justify-between text-sm text-stellar-black-700 bg-stellar-black-50 p-3 rounded-lg border border-stellar-black-100">
-                      <div className="flex items-center">
-                        <Milestone className="h-4 w-4 mr-2 text-stellar-black-500" />
-                        <span>Hitos completados</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="font-semibold text-stellar-black-900">{cantidad_hito}</span>
-                        <span className="text-stellar-black-500">/ {total_hitos}</span>
-                      </div>
-                    </div>
-
-                    <div className="p-3 bg-stellar-gold-50 rounded-lg border border-stellar-gold-200">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-sm text-stellar-black-800">Detalles del fondo</h4>
-                      </div>
-                      <div className="mt-2 text-sm text-stellar-black-700">
-                        <p>Este fondo de beca está destinado a apoyar proyectos de investigación científica.</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Button className="w-full bg-black hover:bg-gray-900 text-white font-medium py-3 rounded-full shadow-lg transition-all duration-200 flex items-center justify-between">
-                        <span>Ver Detalles Completos</span>
-                        <div className="bg-yellow-400 rounded-full p-1.5 ml-2">
-                          <ExternalLink className="h-3.5 w-3.5 text-black" />
-                        </div>
-                      </Button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+          {/* Hitos sempre visíveis */}
+          <div className="flex items-center justify-between text-sm text-stellar-black-700 bg-stellar-black-50 p-3 rounded-lg border border-stellar-black-100">
+            <div className="flex items-center">
+              <Milestone className="h-4 w-4 mr-2 text-stellar-black-500" />
+              <span>Hitos completados</span>
             </div>
-          </motion.div>
+            <div className="flex items-center gap-1">
+              <span className="font-semibold text-stellar-black-900">{cantidad_hito}</span>
+              <span className="text-stellar-black-500">/ {total_hitos}</span>
+            </div>
+          </div>
+
         </div>
       </CardContent>
 
