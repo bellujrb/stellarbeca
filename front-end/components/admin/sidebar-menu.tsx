@@ -37,7 +37,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
       id: 'becas',
       label: 'Becas',
       icon: Gift,
-      badge: '2',
+      badge: '',
       badgeColor: 'bg-red-500'
     },
     {
