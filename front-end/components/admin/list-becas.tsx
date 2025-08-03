@@ -18,28 +18,6 @@ function ListBecas() {
   const becas = [
     {
       id: 1,
-      nombre_beca: "Beca Embassador",
-      institucion: "Universidad Stellar",
-      valor_total: "50,000 XLM",
-      cantidad_hito: 3,
-      total_hitos: 5,
-      status: 60,
-      contract_address: "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQAHHAGK6ZZXG",
-      created_at: new Date('2024-01-15').getTime()
-    },
-    {
-      id: 2,
-      nombre_beca: "Beca Chile",
-      institucion: "Stellar Foundation",
-      valor_total: "75,000 XLM",
-      cantidad_hito: 2,
-      total_hitos: 4,
-      status: 45,
-      contract_address: "CBQHNAXSI55GX2GN6D67GK7BHKQXDGNYCDLZFC3SYJYDZT7K67VZ75HP",
-      created_at: new Date('2024-01-20').getTime()
-    },
-    {
-      id: 3,
       nombre_beca: "FONDECYT",
       institucion: "Pontificia Universidad Católica de Chile",
       valor_total: "30,000 XLM",
