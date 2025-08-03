@@ -14,26 +14,81 @@ import ResponsablesStep from "./forms/responsables-step";
 import MilestonesStep from "./forms/milestones-step";
 import ResumoStep from "./forms/resumo-step";
 import SucessoStep from "./forms/sucesso-step";
+import BecaDetails from "./beca-details";
 import { FormProvider } from "@/contexts/form-context";
 
 function ListBecas() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("newest");
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showBecaDetails, setShowBecaDetails] = useState(false);
+  const [selectedBecaId, setSelectedBecaId] = useState<number | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Dados das becas com timestamps para ordenação
+  // Dados das becas com timestamps para ordenação e dados completos
   const becas = [
     {
       id: 1,
       nombre_beca: "FONDECYT",
       institucion: "Pontificia Universidad Católica de Chile",
       valor_total: "30,000 XLM",
-      cantidad_hito: 4,
+      cantidad_hito: 2,
       total_hitos: 4,
-      status: 100,
+      status: 50,
       contract_address: "GCKFBEIYTKDEXNLHGXGCIOSTFOXIFVDEUWENZMQHPOIXLRYGENFLFKGX",
-      created_at: new Date('2024-01-10').getTime()
+      created_at: new Date('2024-01-10').getTime(),
+      details_beca: "Proyecto de investigación sobre tecnología blockchain aplicada a sistemas de becas académicas. El objetivo es desarrollar una plataforma descentralizada que permita la gestión transparente de fondos educativos.",
+      responsables: {
+        investigador: {
+          nombre_completo: "Dr. María González Pérez",
+          wallet_publica: "GCKFBEIYTKDEXNLHGXGCIOSTFOXIFVDEUWENZMQHPOIXLRYGENFLFKGX",
+          correo_electronico: "maria.gonzalez@uc.cl"
+        },
+        tutor: {
+          nombre_completo: "Prof. Carlos Silva Rodríguez",
+          wallet_publica: "GDKFBEIYTKDEXNLHGXGCIOSTFOXIFVDEUWENZMQHPOIXLRYGENFLFKGY",
+          correo_electronico: "carlos.silva@uc.cl"
+        },
+        gestor: {
+          nombre_completo: "Ana López Martínez",
+          wallet_publica: "GEKFBEIYTKDEXNLHGXGCIOSTFOXIFVDEUWENZMQHPOIXLRYGENFLFKGZ",
+          correo_electronico: "ana.lopez@uc.cl"
+        }
+      },
+      milestones: [
+        {
+          id: "1",
+          nome: "Revisión Bibliográfica Completa",
+          descripcion: "Completar la revisión de literatura académica sobre blockchain en educación",
+          completed: true,
+          signatures_required: 3,
+          signatures_received: 3
+        },
+        {
+          id: "2",
+          nome: "Desarrollo del Prototipo",
+          descripcion: "Crear el prototipo inicial de la plataforma",
+          completed: true,
+          signatures_required: 3,
+          signatures_received: 3
+        },
+        {
+          id: "3",
+          nome: "Pruebas de Usuario",
+          descripcion: "Realizar pruebas con usuarios reales y recopilar feedback",
+          completed: false,
+          signatures_required: 3,
+          signatures_received: 1
+        },
+        {
+          id: "4",
+          nome: "Documentación Final",
+          descripcion: "Completar la documentación técnica y el informe final",
+          completed: false,
+          signatures_required: 3,
+          signatures_received: 0
+        }
+      ]
     }
   ];
 
@@ -57,8 +112,15 @@ function ListBecas() {
     setCurrentStep(1);
   };
 
+  const handleViewDetails = (becaId: number) => {
+    setSelectedBecaId(becaId);
+    setShowBecaDetails(true);
+  };
+
   const handleBackToList = () => {
     setShowCreateForm(false);
+    setShowBecaDetails(false);
+    setSelectedBecaId(null);
     setCurrentStep(1);
   };
 
@@ -127,6 +189,19 @@ function ListBecas() {
         })()}
       </FormProvider>
     );
+  }
+
+  // RENDERIZAÇÃO CONDICIONAL: Se estamos vendo detalhes da beca
+  if (showBecaDetails && selectedBecaId) {
+    const selectedBeca = becas.find(beca => beca.id === selectedBecaId);
+    if (selectedBeca) {
+      return (
+        <BecaDetails 
+          becaData={selectedBeca}
+          onBack={handleBackToList}
+        />
+      );
+    }
   }
 
   // RENDERIZAÇÃO CONDICIONAL: Se NÃO estamos criando, mostrar APENAS a lista
@@ -206,13 +281,14 @@ function ListBecas() {
               total_hitos={beca.total_hitos}
               status={beca.status}
               contract_address={beca.contract_address}
+              onViewDetails={() => handleViewDetails(beca.id)}
             />
           ))
         ) : (
           <div className="col-span-full text-center py-12">
             <div className="text-stellar-black-400 text-lg mb-2">No se encontraron becas</div>
             <div className="text-stellar-black-300 text-sm">
-              {searchTerm ? `No hay becas que coincidan con \"${searchTerm}\"` : 'No hay becas disponibles'}
+              {searchTerm ? `No hay becas que coincidan con "${searchTerm}"` : 'No hay becas disponibles'}
             </div>
           </div>
         )}
