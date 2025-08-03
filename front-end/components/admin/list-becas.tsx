@@ -8,11 +8,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusCircle, Info, Search, Filter } from "lucide-react";
+import { PlusCircle, Search, Filter } from "lucide-react";
+import InfoBasicasStep from "./forms/info-basicas-step";
+import ResponsablesStep from "./forms/responsables-step";
+import MilestonesStep from "./forms/milestones-step";
+import ResumoStep from "./forms/resumo-step";
+import SucessoStep from "./forms/sucesso-step";
+import { FormProvider } from "@/contexts/form-context";
 
 function ListBecas() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("newest"); // newest, oldest
+  const [sortOrder, setSortOrder] = useState("newest");
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
 
   // Dados das becas com timestamps para ordenação
   const becas = [
@@ -38,21 +46,102 @@ function ListBecas() {
     )
     .sort((a, b) => {
       if (sortOrder === "newest") {
-        return b.created_at - a.created_at; // Mais recente primeiro
+        return b.created_at - a.created_at;
       } else {
-        return a.created_at - b.created_at; // Mais antigo primeiro
+        return a.created_at - b.created_at;
       }
     });
 
+  const handleCreateBeca = () => {
+    setShowCreateForm(true);
+    setCurrentStep(1);
+  };
+
+  const handleBackToList = () => {
+    setShowCreateForm(false);
+    setCurrentStep(1);
+  };
+
+  const handleNextStep = () => {
+    if (currentStep < 5) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePreviousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    } else {
+      handleBackToList();
+    }
+  };
+
+  // RENDERIZACIÓN CONDICIONAL: Se estamos criando uma beca, mostrar APENAS o formulário
+  if (showCreateForm) {
+    return (
+      <FormProvider>
+        {(() => {
+          switch (currentStep) {
+            case 1:
+              return (
+                <InfoBasicasStep 
+                  onNext={handleNextStep}
+                  onBack={handleBackToList}
+                />
+              );
+            case 2:
+              return (
+                <ResponsablesStep 
+                  onNext={handleNextStep}
+                  onBack={handlePreviousStep}
+                />
+              );
+            case 3:
+              return (
+                <MilestonesStep 
+                  onNext={handleNextStep}
+                  onBack={handlePreviousStep}
+                />
+              );
+            case 4:
+              return (
+                <ResumoStep 
+                  onNext={handleNextStep}
+                  onBack={handlePreviousStep}
+                />
+              );
+            case 5:
+              return (
+                <SucessoStep 
+                  onBackToList={handleBackToList}
+                />
+              );
+            default:
+              return (
+                <InfoBasicasStep 
+                  onNext={handleNextStep}
+                  onBack={handleBackToList}
+                />
+              );
+          }
+        })()}
+      </FormProvider>
+    );
+  }
+
+  // RENDERIZAÇÃO CONDICIONAL: Se NÃO estamos criando, mostrar APENAS a lista
   return (
     <div className="max-w-6xl mx-auto space-y-6">
-      {/* Cabeçalho simplificado - estilo transactions */}
+      {/* Cabeçalho */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="space-y-1">
           <h2 className="text-2xl font-bold text-stellar-black-900">Becas Activas</h2>
           <p className="text-sm text-stellar-black-600">Gestione todas las becas disponibles en el ecosistema Stellar</p>
         </div>
-        <Button className="bg-black hover:bg-gray-900 text-white font-medium py-3 rounded-full shadow-lg transition-all duration-200 whitespace-nowrap flex items-center">
+        <Button 
+          onClick={handleCreateBeca}
+          className="bg-black hover:bg-gray-900 text-white font-medium py-3 rounded-full shadow-lg transition-all duration-200 whitespace-nowrap flex items-center"
+        >
           <span className="flex-1">Crear Nueva Beca</span>
           <div className="bg-yellow-400 rounded-full p-1.5 ml-4">
             <PlusCircle className="h-4 w-4 text-black" />
@@ -60,7 +149,7 @@ function ListBecas() {
         </Button>
       </div>
 
-      {/* Filtros e Busca - Mesmo estilo do componente de transações */}
+      {/* Filtros e Busca */}
       <div className="bg-white rounded-2xl p-6 shadow-lg border border-stellar-black-100">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
           {/* Barra de busca */}
