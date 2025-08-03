@@ -148,7 +148,7 @@ export function BecaCard({
                         <h4 className="font-medium text-sm text-stellar-black-800">Detalles del fondo</h4>
                       </div>
                       <div className="mt-2 text-sm text-stellar-black-700">
-                        <p>Este fondo de beca está destinado a apoyar proyectos innovadores en el ecosistema Stellar.</p>
+                        <p>Este fondo de beca está destinado a apoyar proyectos de investigación científica.</p>
                       </div>
                     </div>
 
