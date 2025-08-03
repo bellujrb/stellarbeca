@@ -42,14 +42,14 @@ const NavigationTabs: React.FC<NavigationTabsProps> = ({
       color: 'text-stellar-gold-600',
     },
     {
-      id: 'gestion-fondos',
-      label: 'Gestión de Fondos',
+      id: 'transacciones',
+      label: 'Transacciones',
       icon: Coins,
       color: 'text-stellar-gold-600',
     },
     {
-      id: 'ranking',
-      label: 'Ranking',
+      id: 'clasificacion',
+      label: 'Clasificación',
       icon: Trophy,
       color: 'text-stellar-gold-600',
     },
