@@ -1,3 +1,4 @@
+import React from "react";
 import { AlertTriangle, Wallet } from "lucide-react";
 
 export const WalletRequiredMessage: React.FC = () => {

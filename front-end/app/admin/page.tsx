@@ -8,7 +8,7 @@ import { useWallet } from '@/contexts/wallet-context';
 import { WalletRequiredMessage } from '@/components/admin/wallet-require-message';
 import TransactionsSection from '@/components/admin/transactions';
 import RankingResearchers from '@/components/admin/ranking-researchers';
-import RendimientosSection from '@/components/admin/rendimientos';
+import Rendimientos from '@/components/admin/rendimientos';
 
 export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState('becas');
@@ -24,11 +24,11 @@ export default function AdminDashboard() {
       case 'becas':
         return <ListBecas />;
       case 'clasificacion':
-        return <RankingResearchers/>;
+        return <RankingResearchers />;
       case 'transactions':
-        return <TransactionsSection/>;
+        return <TransactionsSection />;
       case 'rendimientos':
-        return <RendimientosSection/>;
+        return <Rendimientos />;
       default:
         return <div className="p-6 bg-white rounded-xl shadow-sm">404</div>;
     }
