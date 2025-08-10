@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grant_api
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./api/.env
+    networks:
+      - grant-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: grant_db
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "5432:5432"
+    volumes:
+
+    networks:
+      - grant-network
+
+networks:
+  grant-network:
+    driver: bridge
+
+volumes:
+  pgdata:

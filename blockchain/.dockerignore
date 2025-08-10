@@ -1,0 +1,14 @@
+
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+.git
+.gitignore
+
+api/node_modules
+contracts/target
+
+*.log
+.env
+.vscode
